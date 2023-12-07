@@ -69,6 +69,7 @@ browpaquito.src="browpaquito.PNG";
 var normalpaquito = new Image();
 normalpaquito.src="normalpaquito.PNG";
 
+// makeup buttons with deatils for which key to press
 var mbuttons=new Image();
 mbuttons.src="mbuttons.PNG";
 
@@ -99,6 +100,7 @@ var fefitoy = 75;
 var baiacux = 360;
 var baiacuy = 75;
 
+// this function plays every time a fish leaves the map- it adds xp and spawns the next one
 function reset(){
     xp+=25;
     if(fish==1){
@@ -153,6 +155,7 @@ function reset(){
     return;
 }
 
+// this functions controls an displays the current level
 function checkLevel(){
     if (xp<50){
         level=1;
@@ -199,7 +202,7 @@ function drawBG(){
     checkLevel();
 }
 
-// draws sprite
+// drawing characters- 1 for each fish
 function drawBob(){
     ctx.drawImage(bobwalk, posx, posy, 75, 75);
 }
@@ -216,7 +219,7 @@ function drawFefito(){
     ctx.drawImage(fefitowalk, posx, posy, 75,75);
 }
 
-// rotates fish by changing image src
+// rotates fish by changing image src - one for each direction (numbers indicate angle of rotation)
 function change0(){
     if(fish==1){
         bobwalk.src="bobgoeswalk.GIF";
@@ -319,24 +322,28 @@ function blobM(){
     window.addEventListener("keydown", haha);
         function haha(e){
         if (e.key=="1"){
+            // changes image to facemask
             ctx.clearRect(0,0,1350,650);
             drawBG();
             ctx.drawImage(facemaskbob, 0, 0, 1350,650);
             ctx.drawImage(mbuttons, -50,0,1350,650);
         }
         else if(e.key=="2"){
+            // changes image to full face
             ctx.clearRect(0,0,1350,650);
             drawBG();
             ctx.drawImage(blushbob, 0, 0, 1350,650);
             ctx.drawImage(mbuttons, -50,0,1350,650);
         }
         else if(e.key=="3"){
+            // changes image to full face + brows and lashes
             ctx.clearRect(0,0,1350,650);
             drawBG();
             ctx.drawImage(browbob, 0, 0, 1350,650);
             ctx.drawImage(mbuttons, -50,0,1350,650);
         }
         else if (e.key=="4"){
+            // makes the fish leave
             palace.width = 1350,650;
             palace.height = 1350,650;
             if (gtc==1){
@@ -351,6 +358,7 @@ function blobM(){
             else if(gtc==4){
                 leaveChair(-50,390,chair4);
             }
+            // after the fish leaves, the computer stops listening for any keys so the process isn't interrupted.
             window.removeEventListener("keydown", haha);
             return;
         };
@@ -470,6 +478,7 @@ function makeupButton1(){
     ctx.clearRect(0,0,1350,650);
     drawBG();
     drawBob();
+    // creates event listener for the specific number of the chair
     window.addEventListener("keydown",here)
     function here(e){
         if (e.key=="1"){
@@ -477,6 +486,7 @@ function makeupButton1(){
                 window.removeEventListener("keydown", here);
             }
         else if (e.key!="1"){
+            // removing event listener and running function again- important for fixing the bug bc it doesn't listen to the wrong keys
             window.removeEventListener("keydown", here);
             makeupButton1();
             return;
@@ -544,8 +554,9 @@ function makeupButton4(){
     }
 }
 
-// getting to chair
+// getting to chair - changing the x and y coordinates of the current fish
 function getToChair(a, b, c){
+    // makes sure to change the posx and posy according to the right fish
     if(fish==1){
         posy=bloby;
         posx=blobx;
@@ -562,7 +573,7 @@ function getToChair(a, b, c){
         posy=fefitoy;
         posx=fefitox;
     }
-
+    // clear rect removes all of the drawing from the canvas to go through
     ctx.clearRect(0,0,1350,650);
     if (posy<a){
         if(fish==1){
@@ -609,6 +620,7 @@ function getToChair(a, b, c){
             else if(fish==4){
                 makeupButton4();
             } 
+            //return ends function
             return c;
         }
     }
@@ -625,10 +637,11 @@ function getToChair(a, b, c){
     else if(fish==4){
         drawFefito();
     }
+    // runs the function again to "animate" the fish swmming- redrawing the canvas
     requestAnimationFrame(reachChair)
 }
 
-// bye bye (chair->door)
+// bye bye (chair->door) changes x and y fish variables
 function leaveChair(a,b,c){
     if(fish==1){
         posy=bloby;
@@ -702,6 +715,7 @@ function leaveChair(a,b,c){
 // gtc = get to chair
 var gtc=0;
 
+// spawning functions- changes the fish variable (determines which one is the current fish) and runs getToChair()
 function spawnbob(){
     fish=1;
     getToChair(300,700,chair1);
@@ -727,6 +741,7 @@ function spawnfefito(){
     gtc=4;
 }
 
+// begins the game and continues the fish spawn chain
 function spawngen(){
     checkLevel();
     if(level==1){
